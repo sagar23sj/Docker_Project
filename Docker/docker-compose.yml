@@ -1,0 +1,29 @@
+version: '3'
+services:
+  dbos:
+    image: mysql:5.7
+    volumes: 
+      - mysql_storage_new:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: sagar
+      MYSQL_PASSWORD: sagar
+      MYSQL_DATABASE: mydb
+
+  wordpressos:
+    image: wordpress:5.1.1-php7.3-apache
+    depends_on: 
+      - dbos
+    ports: 
+      - 8081:80
+    environment: 
+      WORDPRESS_DB_HOST: dbos
+      WORDPRESS_DB_USER: sagar
+      WORDPRESS_DB_PASSWORD: sagar
+      WORDPRESS_DB_NAME: mydb
+    volumes:
+      - wp_storage_new:/var/www/html
+
+volumes:
+  mysql_storage_new:
+  wp_storage_new:                
