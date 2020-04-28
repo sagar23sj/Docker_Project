@@ -1,0 +1,30 @@
+version: '3'
+services:
+  ghost_db:
+    image: mysql:5.7
+    volumes: 
+      - ghost_db_storage:/var/lib/mysql    
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: sagar
+      MYSQL_PASSWORD: sagar
+      MYSQL_DATABASE: ghostdb
+
+  ghostserver:
+    image: ghost
+    depends_on: 
+      - ghost_db
+    ports: 
+      - 8080:2368
+    environment:
+      database_client: mysql
+      database_connection_host: ghost_db
+      database_connection_user: sagar
+      database_connection_password: sagar
+      database_connection_database: ghostdb
+
+    volumes:
+      - ghost_server_storage:/var/lib/ghost/content
+volumes:
+  ghost_db_storage:
+  ghost_server_storage:
